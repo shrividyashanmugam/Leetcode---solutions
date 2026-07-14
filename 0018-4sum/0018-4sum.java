@@ -1,32 +1,49 @@
+import java.util.*;
+
 class Solution {
+    private List<List<Integer>> finalResult;
     public List<List<Integer>> fourSum(int[] nums, int target) {
-        Set<List<Integer>> set = new HashSet<>();
-        int n = nums.length;
-        Arrays.sort(nums);
-        if(n<4) 
-        return new ArrayList<>(set);  
-        for(int i=0;i<n-3;i++)
-        {
-            for(int j=i+1;j<n-2;j++)
-            {
-                int left=j+1;
-                int right=n-1;
-                while(left<right)
-                {
-                    long sum = (long) nums[i] + (long) nums[j] + (long) nums[left] + (long) nums[right];
-                    if(sum==target)
-                    {
-                        set.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
-                        left++;
-                        right--;
-                    }
-                    else if(sum>target)
-                    right--;
-                    if(sum<target)
-                    left++;
-                }
+        return new AbstractList<List<Integer>>() {
+            public List<Integer> get(int index) {
+                f();
+                return finalResult.get(index);
             }
-        }
-        return new ArrayList<>(set);    
+
+            public int size() {
+                f();
+                return finalResult.size();
+            }
+
+            private void f() { 
+                List<List<Integer>> resultList = new ArrayList<>();
+                Set<List<Integer>> uniqueSet = new HashSet<>();
+                int n = nums.length;
+                Arrays.sort(nums);
+                for(int first = 0; first < n - 3; first++) {
+                    for(int second = first + 1; second < n - 2; second++) {
+                        long remainingTarget = (long) target - (long) nums[first] - (long) nums[second];
+                        int left = second + 1, right = n - 1;
+
+                        while(left < right) {
+                            if(nums[left] + nums[right] == remainingTarget) {
+                                uniqueSet.add(Arrays.asList(nums[left], nums[right], nums[first], nums[second]));
+                                while(left < right && nums[left] == nums[left + 1]) 
+                                    left++;
+                                while(left < right && nums[right] == nums[right - 1]) 
+                                    right--;
+                                left++;
+                                right--;
+                            } else if(nums[left] + nums[right] < remainingTarget) {
+                                left++;
+                            } else {
+                                right--;
+                            }
+                        }
+                    }
+                }
+                resultList.addAll(uniqueSet);
+                finalResult = resultList;
+            }
+        };
     }
 }
