@@ -1,11 +1,4 @@
 # Write your MySQL query statement below
-# Write your MySQL query statement below
-SELECT 
-    user_id, 
-    email
-FROM 
-    Users
-WHERE 
-    email REGEXP '^[A-Za-z0-9_]+@[A-Za-z]+\\\.com$'
-ORDER BY 
-    user_id ASC;
+SELECT user_id, email
+FROM Users
+WHERE email REGEXP '^[a-z0-9_]+@[^@0-9]+\\.com$' order by user_id;
