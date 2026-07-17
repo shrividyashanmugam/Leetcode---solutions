@@ -1,6 +1,5 @@
 # Write your MySQL query statement below
-SELECT ACTIVITY_DATE AS DAY ,COUNT(DISTINCT USER_ID) AS ACTIVE_USERS FROM
-ACTIVITY 
-WHERE DATEDIFF('2019-07-27', activity_date) < 30
-    AND DATEDIFF('2019-07-27', activity_date) >= 0
-GROUP BY ACTIVITY_DATE
+select activity_date as day,count(distinct user_id) as active_users
+from activity
+where activity_date between "2019-06-28" and "2019-7-27"
+group by activity_date;
