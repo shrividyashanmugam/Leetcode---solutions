@@ -1,22 +1,24 @@
-import java.util.Arrays;
-
 class Solution {
+
     public String smallestPalindrome(String s) {
-        int n = s.length();
-        int halfLen = n / 2;
-        char[] half = s.substring(0, halfLen).toCharArray();
-        Arrays.sort(half);
-        
-        StringBuilder sb = new StringBuilder();
-        sb.append(half);
- 
-        if (n % 2 != 0) {
-            sb.append(s.charAt(halfLen));
+        int partition = s.length() / 2;
+        int[] bucket = new int[26];
+
+        for (int i = 0; i < partition; i++) {
+            bucket[s.charAt(i) - 'a'] += 1;
         }
-        for (int i = halfLen - 1; i >= 0; i--) {
-            sb.append(half[i]);
+
+        StringBuilder left = new StringBuilder();
+        for (int i = 0; i < 26; i++) {
+            if (bucket[i] > 0) {
+                left.append(String.valueOf((char) (i + 'a')).repeat(bucket[i]));
+            }
         }
-        
-        return sb.toString();
+
+        String mid =
+            s.length() % 2 != 0 ? String.valueOf(s.charAt(partition)) : "";
+        String right = new StringBuilder(left).reverse().toString();
+
+        return left.toString() + mid + right;
     }
 }
